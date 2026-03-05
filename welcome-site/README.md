@@ -1,67 +1,43 @@
 # Lawn Stars — Waitlist Landing Page
 
-A graphic-heavy waitlist signup site for Lawn Stars built with React, HeroUI, Tailwind CSS, and a Node.js/Express backend connected to Google Sheets and Nodemailer.
+A graphic-heavy waitlist signup site for Lawn Stars built with React, HeroUI, and Tailwind CSS. Form submissions are handled by **Formspree** (no backend required).
 
 ## Tech Stack
 
 | Layer    | Technology                                    |
 | -------- | --------------------------------------------- |
 | Frontend | React 18, Vite, HeroUI, Tailwind CSS v4, Framer Motion |
-| Backend  | Node.js, Express                              |
-| Database | Google Sheets (via service account)            |
-| Email    | Nodemailer (SMTP)                             |
+| Form / Email / Sheets | Formspree (form endpoint + auto-responder + optional Google Sheets) |
 
 ## Quick Start
 
-### 1. Install dependencies
+### 1. Create a Formspree form
+
+1. Go to [formspree.io](https://formspree.io) and create a free account.
+2. Create a new form and copy the form ID (the hash in the endpoint, e.g. `https://formspree.io/f/xyzabc` → `xyzabc`).
+
+### 2. Configure frontend env
 
 ```bash
-# From the welcome-site directory
-cd client && npm install
-cd ../server && npm install
-```
-
-### 2. Configure environment variables
-
-```bash
-cd server
-cp .env.example .env
-# Edit .env with your actual credentials (see below)
-```
-
-### 3. Start development servers
-
-In two separate terminals:
-
-```bash
-# Terminal 1 — API server
-cd server
-npm run dev
-
-# Terminal 2 — React dev server
 cd client
+cp .env.example .env
+# Set VITE_FORMSPREE_FORM_ID=your_form_id
+```
+
+### 3. Run the client
+
+```bash
+cd client
+npm install
 npm run dev
 ```
 
-Visit **http://localhost:5173** in your browser.
+Visit **http://localhost:5173**.
 
-## Google Sheets Setup
+### 4. Formspree dashboard setup
 
-1. Go to [Google Cloud Console](https://console.cloud.google.com)
-2. Create a new project (or use an existing one)
-3. Enable the **Google Sheets API**
-4. Go to **IAM & Admin > Service Accounts** and create a service account
-5. Create a JSON key for that service account and download it
-6. Create a Google Spreadsheet and add this header row: `Timestamp | Name | Email | Phone | Zip Code | Referral Code`
-7. **Share** the spreadsheet with the service account email (give Editor access)
-8. Copy the spreadsheet ID from the URL and add it along with the service account email and private key to your `.env`
-
-## Gmail SMTP Setup
-
-1. Enable **2-Step Verification** on your Google Account
-2. Go to [App Passwords](https://myaccount.google.com/apppasswords)
-3. Generate a new app password for "Mail"
-4. Use that password as `SMTP_PASS` in your `.env`
+- **Auto-responder**: In Formspree, set the response email so subscribers get your “You’re on the list!” welcome. You can use placeholders like `{{name}}`, `{{referralCode}}` if your plan supports them.
+- **Google Sheets**: In Formspree, connect your form to a Google Sheet so each submission becomes a row (name, email, phone, zipCode, referralCode, etc.).
 
 ## Project Structure
 
@@ -71,13 +47,8 @@ welcome-site/
     src/
       components/          Reusable UI components
       pages/               Landing page + Confirmation page
-      index.css            Tailwind entry + custom theme
-    vite.config.js         Vite config with API proxy
-  server/
-    server.js              Express API entry point
-    sheetsService.js       Google Sheets integration
-    emailService.js        Nodemailer + HTML email template
-    .env.example           Environment variable template
+    .env.example           VITE_FORMSPREE_FORM_ID
+  server/                  (deprecated — backend removed)
 ```
 
 ## Building for Production
@@ -87,4 +58,4 @@ cd client
 npm run build
 ```
 
-The output will be in `client/dist/`. Serve it with any static file server and point API requests to your Express backend.
+Deploy the `client/dist/` folder to Vercel, Netlify, or any static host. Set `VITE_FORMSPREE_FORM_ID` in the host’s environment variables.

@@ -24,23 +24,37 @@ export default function WaitlistForm({ formRef }) {
     setLoading(true);
 
     try {
-      console.log("[WaitlistForm] Submitting form data:", formData);
+      const formId = import.meta.env.VITE_FORMSPREE_FORM_ID || "meerjqln";
+      if (!formId) {
+        throw new Error("Form endpoint not configured. Set VITE_FORMSPREE_FORM_ID.");
+      }
 
-      const res = await fetch("/api/waitlist", {
+      const referralCode = crypto.randomUUID().slice(0, 8).toUpperCase();
+      const payload = {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone || "",
+        zipCode: formData.zipCode,
+        referralCode,
+        _timestamp: new Date().toISOString(),
+      };
+
+      const res = await fetch(`https://formspree.io/f/${formId}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(payload),
       });
 
-      console.log("[WaitlistForm] Response status:", res.status);
-      const data = await res.json();
-      console.log("[WaitlistForm] Response data:", data);
+      const contentType = res.headers.get("content-type");
+      const data = contentType?.includes("application/json")
+        ? await res.json()
+        : { error: await res.text() || "Invalid response" };
 
       if (!res.ok) {
         throw new Error(data.error || "Something went wrong");
       }
 
-      navigate(`/welcome?ref=${data.referralCode}`);
+      navigate(`/welcome?ref=${referralCode}`);
     } catch (err) {
       console.error("[WaitlistForm] Error:", err);
       setError(err.message);
