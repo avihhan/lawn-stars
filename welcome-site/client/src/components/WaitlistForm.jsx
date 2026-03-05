@@ -24,13 +24,17 @@ export default function WaitlistForm({ formRef }) {
     setLoading(true);
 
     try {
+      console.log("[WaitlistForm] Submitting form data:", formData);
+
       const res = await fetch("/api/waitlist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
+      console.log("[WaitlistForm] Response status:", res.status);
       const data = await res.json();
+      console.log("[WaitlistForm] Response data:", data);
 
       if (!res.ok) {
         throw new Error(data.error || "Something went wrong");
@@ -38,6 +42,7 @@ export default function WaitlistForm({ formRef }) {
 
       navigate(`/welcome?ref=${data.referralCode}`);
     } catch (err) {
+      console.error("[WaitlistForm] Error:", err);
       setError(err.message);
     } finally {
       setLoading(false);
