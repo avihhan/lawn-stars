@@ -138,65 +138,73 @@ export default function WaitlistForm({ formRef }) {
               as Lawn Stars launches in your neighborhood.
             </p>
 
-            <form onSubmit={handleSubmit} className="space-y-5">
-              <Input
-                label="Full Name"
-                placeholder="John Smith"
-                value={formData.name}
-                onChange={handleChange("name")}
-                isRequired
-                variant="bordered"
-                labelPlacement="outside"
-                radius="lg"
-                classNames={{
-                  label: "text-lawn-800 font-semibold",
-                  inputWrapper: "border-lawn-200 hover:border-lawn-400 focus-within:!border-lawn-500",
-                }}
-              />
-              <Input
-                label="Email"
-                type="email"
-                placeholder="john@example.com"
-                value={formData.email}
-                onChange={handleChange("email")}
-                isRequired
-                variant="bordered"
-                labelPlacement="outside"
-                radius="lg"
-                classNames={{
-                  label: "text-lawn-800 font-semibold",
-                  inputWrapper: "border-lawn-200 hover:border-lawn-400 focus-within:!border-lawn-500",
-                }}
-              />
-              <div className="grid grid-cols-2 gap-4">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+              <div className="flex flex-col gap-1.5">
+                <label className="text-lawn-800 font-semibold text-sm">
+                  Full Name <span className="text-red-500">*</span>
+                </label>
                 <Input
-                  label="Phone"
-                  type="tel"
-                  placeholder="(555) 123-4567"
-                  value={formData.phone}
-                  onChange={handleChange("phone")}
-                  variant="bordered"
-                  labelPlacement="outside"
-                  radius="lg"
-                  classNames={{
-                    label: "text-lawn-800 font-semibold",
-                    inputWrapper: "border-lawn-200 hover:border-lawn-400 focus-within:!border-lawn-500",
-                  }}
-                />
-                <Input
-                  label="Zip Code"
-                  placeholder="30301"
-                  value={formData.zipCode}
-                  onChange={handleChange("zipCode")}
+                  placeholder="John Smith"
+                  value={formData.name}
+                  onChange={handleChange("name")}
                   isRequired
                   variant="bordered"
-                  labelPlacement="outside"
                   radius="lg"
                   classNames={{
-                    label: "text-lawn-800 font-semibold",
-                    inputWrapper: "border-lawn-200 hover:border-lawn-400 focus-within:!border-lawn-500",
+                    inputWrapper: "border-lawn-200 hover:border-lawn-400 focus-within:!border-lawn-500 min-h-12",
                   }}
                 />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <label className="text-lawn-800 font-semibold text-sm">
+                  Email <span className="text-red-500">*</span>
+                </label>
+                <Input
+                  type="email"
+                  placeholder="john@example.com"
+                  value={formData.email}
+                  onChange={handleChange("email")}
+                  isRequired
+                  variant="bordered"
+                  radius="lg"
+                  classNames={{
+                    inputWrapper: "border-lawn-200 hover:border-lawn-400 focus-within:!border-lawn-500 min-h-12",
+                  }}
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-5">
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-lawn-800 font-semibold text-sm">
+                    Phone
+                  </label>
+                  <Input
+                    type="tel"
+                    placeholder="(555) 123-4567"
+                    value={formData.phone}
+                    onChange={handleChange("phone")}
+                    variant="bordered"
+                    radius="lg"
+                    classNames={{
+                      inputWrapper: "border-lawn-200 hover:border-lawn-400 focus-within:!border-lawn-500 min-h-12",
+                    }}
+                  />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-lawn-800 font-semibold text-sm">
+                    Zip Code <span className="text-red-500">*</span>
+                  </label>
+                  <Input
+                    placeholder="30301"
+                    value={formData.zipCode}
+                    onChange={handleChange("zipCode")}
+                    isRequired
+                    variant="bordered"
+                    radius="lg"
+                    classNames={{
+                      inputWrapper: "border-lawn-200 hover:border-lawn-400 focus-within:!border-lawn-500 min-h-12",
+                    }}
+                  />
+                </div>
               </div>
 
               {error && (
@@ -209,12 +217,12 @@ export default function WaitlistForm({ formRef }) {
                 spinner={<Spinner size="sm" color="white" />}
                 size="lg"
                 radius="lg"
-                className="w-full bg-gradient-to-r from-lawn-600 to-lawn-500 text-white font-bold text-lg shadow-xl hover:shadow-lawn-500/30 transition-all hover:scale-[1.02]"
+                className="w-full bg-gradient-to-r from-lawn-600 to-lawn-500 text-white font-bold text-lg shadow-xl hover:shadow-lawn-500/30 transition-all hover:scale-[1.02] mt-1"
               >
                 {loading ? "Joining..." : "Join the Waitlist"}
               </Button>
 
-              <p className="text-xs text-gray-400 text-center">
+              <p className="text-xs text-gray-400 text-center -mt-2">
                 By joining, you agree to receive updates from Lawn Stars. We
                 respect your privacy — unsubscribe anytime.
               </p>
