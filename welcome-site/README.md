@@ -60,4 +60,4 @@ npm run build
 
 Deploy the `client/dist/` folder to Vercel, Netlify, or any static host. Set `VITE_FORMSPREE_FORM_ID` in the host’s environment variables.
 
-Editted 2 days ago..
+Editted 14 days ago..
